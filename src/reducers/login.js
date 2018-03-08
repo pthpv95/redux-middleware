@@ -1,12 +1,12 @@
-import { LOGIN, REQUEST_LOGIN, RESPONSE_LOGIN } from "../actions";
+import { REQUEST_LOGIN, RESPONSE_LOGIN, LOGIN_PAGE_UNLOADED } from "../actions";
 const login = (state = {}, action) => {
   switch (action.type) {
-    case "LOGIN":
-      return { ...state, payloads: action.payloads, inProgress: false };
-    case "REQUEST_LOGIN":
+    case REQUEST_LOGIN:
       return { ...state, inProgress: true };
-    case "RESPONSE_LOGIN":
-      return { ...state, inProgress: false };
+    case RESPONSE_LOGIN:
+      return { ...state, inProgress: false, error: action.payload.errors ? action.payload.errors : null };
+    case LOGIN_PAGE_UNLOADED:
+      return {}
     default:
       return state;
   }
