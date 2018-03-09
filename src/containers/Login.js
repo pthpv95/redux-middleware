@@ -81,7 +81,7 @@ class Login extends React.Component {
             disabled={this.props.inProgress}
             onClick={this.submitForm}
           >
-            Sign in
+            Log in
           </button>
         </form>
       </div>

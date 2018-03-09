@@ -15,6 +15,9 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import api from "./services/api";
 import "./App.css";
+import Home from "./components/Home";
+import history from "./history";
+import BookContainer from "./containers/BookContainer";
 
 const mapStateToProps = state => ({
   ...state.common
@@ -31,40 +34,67 @@ class App extends React.Component {
     super(props);
     this.state = {
       isAuthenticated: false,
-      username: ""
+      fullname: ""
     };
   }
 
   componentWillMount() {
-    this.setState({ isAuthenticated: this.props.isAuthenticated });
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    api.Auth.current().then(res => {
+      this.setState({ isAuthenticated: this.props.isAuthenticated });
+      this.setState({ fullname: res.data.data.fullName });
+    }, error => {
+      this.setState({ isAuthenticated: false })
+    })
+  }
+
+  handleLogout() {
+    api.Auth.logout();
+    this.setState({ isAuthenticated: false });
+    history.push('/login');
   }
 
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-          <button
-            onClick={e => {
-              api.Auth.logout();
-            }}
-          >
-            Logout
-          </button>
-          <Link to="/profile">
-            <button>Profile</button>
-          </Link>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Switch>
-          <Route path="/profile" component={Profile} />
-          <Route path="/login" component={Login} />
-        </Switch>
-      </div>
-    );
+    if (!api.Auth.isAuthorized()) {
+      return (
+        <div>
+          <Switch>
+            <Route path="/login" component={Login} />
+          </Switch>
+        </div>
+      )
+    } else {
+      return (
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Welcome {this.state.fullname} to React</h1>
+            <Link to="/home">
+              <button>Home</button>
+            </Link>
+            <Link to="/book">
+              <button>Books</button>
+            </Link>
+            <Link to="/profile">
+              <button>Profile</button>
+            </Link>
+            <button onClick={e => { this.handleLogout() }}>Log out</button>
+          </header>
+          <p className="App-intro">
+            To get started, edit <code>src/App.js</code> and save to reload.
+          </p>
+          <Switch>
+            <Route path="/home" component={Home} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/login" component={Login} />
+            <Route path="/book" component={BookContainer} />
+          </Switch>
+        </div>
+      );
+    }
   }
 }
 
