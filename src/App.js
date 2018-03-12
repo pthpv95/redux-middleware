@@ -18,6 +18,7 @@ import "./App.css";
 import Home from "./components/Home";
 import history from "./history";
 import BookContainer from "./containers/BookContainer";
+import { spring, AnimatedSwitch } from 'react-router-transition';
 
 const mapStateToProps = state => ({
   ...state.common
@@ -86,16 +87,50 @@ class App extends React.Component {
           <p className="App-intro">
             To get started, edit <code>src/App.js</code> and save to reload.
           </p>
-          <Switch>
-            <Route path="/home" component={Home} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/login" component={Login} />
-            <Route path="/book" component={BookContainer} />
-          </Switch>
+          <div>
+            <AnimatedSwitch
+              {...pageTransitions}
+              mapStyles={mapStyles}
+            >
+              <Route path="/home" component={Home} />
+              <Route path="/profile" component={Profile} />
+              <Route path="/login" component={Login} />
+              <Route path="/book" component={BookContainer} />
+            </AnimatedSwitch>
+          </div>
         </div>
       );
     }
   }
 }
+
+function mapStyles(styles) {
+  return {
+    opacity: styles.opacity,
+    transform: `translateX(${styles.offset}px)`,
+  };
+}
+
+function glide(val) {
+  return spring(val, {
+    stiffness: 174,
+    damping: 19,
+  });
+}
+
+const pageTransitions = {
+  atEnter: {
+    offset: -200,
+    opacity: 0,
+  },
+  atLeave: {
+    offset: glide(-100),
+    opacity: glide(0),
+  },
+  atActive: {
+    offset: glide(0),
+    opacity: glide(1),
+  },
+};
 
 export default App;

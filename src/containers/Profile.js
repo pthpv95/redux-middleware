@@ -17,6 +17,10 @@ class Profile extends React.Component {
     }
 
     componentWillMount() {
+
+    }
+
+    componentDidMount() {
         this.props.onLoad();
     }
 

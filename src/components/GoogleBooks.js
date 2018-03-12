@@ -1,5 +1,6 @@
 import React from "react";
 import "../components/book.css";
+import BookItem from "../components/BookItem";
 
 class GoogleBook extends React.Component {
     constructor(props) {
@@ -30,13 +31,7 @@ class GoogleBook extends React.Component {
                         </thead>
                         {this.props.book.data
                             && this.props.book.data.items.map((item, i) =>
-                                <tbody key={i}>
-                                    <tr>
-                                        <td><a href={item.volumeInfo.infoLink}> {item.volumeInfo.title}</a></td>
-                                        <td>{item.volumeInfo.description}</td>
-                                        <td><img src={item.volumeInfo.imageLinks === undefined ? "" : item.volumeInfo.imageLinks.smallThumbnail} /></td>
-                                    </tr>
-                                </tbody>
+                                <BookItem book={item} key={i} />
                             )}
                     </table>
 

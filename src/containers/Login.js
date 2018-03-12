@@ -1,6 +1,7 @@
 import React from "react";
 import auth from "../actions/index";
 import { connect } from "react-redux";
+import Loading from "../components/common/Loading";
 
 const mapStateToProps = state => ({
   ...state.login
@@ -84,6 +85,7 @@ class Login extends React.Component {
             Log in
           </button>
         </form>
+        <Loading isLoading={this.props.inProgress} />
       </div>
     );
   }
