@@ -31,7 +31,7 @@ class GoogleBook extends React.Component {
                         </thead>
                         {this.props.book.data
                             && this.props.book.data.items.map((item, i) =>
-                                <BookItem book={item} key={i} />
+                                <BookItem book={item} key={i}/>
                             )}
                     </table>
 
