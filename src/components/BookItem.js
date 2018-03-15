@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
 const BookItem = ({ book }) => {
-    console.log(book);
-
     const bookItem = book.volumeInfo;
     return (
         <tbody>

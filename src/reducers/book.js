@@ -1,6 +1,6 @@
 import { REQUEST_GOOGLE_BOOKS, RESPONSE_GET_GOOGLE_BOOKS } from "../actions";
 
-const book = (state = {}, action) => {
+const book = (state = [], action) => {
     switch (action.type) {
         case REQUEST_GOOGLE_BOOKS:
             return {

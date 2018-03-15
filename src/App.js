@@ -41,6 +41,7 @@ class App extends React.Component {
 
   componentWillMount() {
     this.getCurrentUser();
+
   }
 
   getCurrentUser() {
@@ -59,6 +60,7 @@ class App extends React.Component {
   }
 
   render() {
+    const EnhancedHomeComponent = ppHoc('on', Home);
     if (!api.Auth.isAuthorized()) {
       return (
         <div>
@@ -87,6 +89,7 @@ class App extends React.Component {
           <p className="App-intro">
             To get started, edit <code>src/App.js</code> and save to reload.
           </p>
+          <EnhancedHomeComponent />
           <div>
             <AnimatedSwitch
               {...pageTransitions}
@@ -132,5 +135,17 @@ const pageTransitions = {
     opacity: glide(1),
   },
 };
+
+const ppHoc = (toggleName, WrappedComponent) => {
+  return class extends React.Component {
+    constructor(props) {
+      super(props)
+    }
+
+    render() {
+      return toggleName === 'on' ? <WrappedComponent  {...this.props} /> : null;
+    }
+  }
+}
 
 export default App;

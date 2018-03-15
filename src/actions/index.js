@@ -13,8 +13,11 @@ export const RESPONSE_GET_GOOGLE_BOOKS = "RESPONSE_GET_GOOGLE_BOOKS";
 export const ASYNC_START = "ASYNC_START";
 export const ASYNC_END = "ASYNC_END";
 
+
+
+// thunk 
 export function login(credentials) {
-  return function (dispatch) {
+  return function (dispatch, store) {
     dispatch({ type: REQUEST_LOGIN });
     setTimeout(() => {
       const payload = {};
@@ -51,8 +54,6 @@ export function searchGoogleBook(title) {
     dispatch(requestBooks(title));
     return googleApi.searchBooks(title)
       .then(res => {
-        console.log(res);
-
         const payload = res;
         dispatch(getBooksSuccessfully(payload));
       })
