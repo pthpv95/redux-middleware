@@ -2,35 +2,37 @@ import React from "react";
 import "../components/book.css";
 import BookItem from "../components/BookItem";
 import withLoader from "../HOC/LoaderHoc";
+import H3 from "../components/common/H3";
+import Input from "../components/common/Input";
+import ButtonDefault from "../components/common/ButtonDefault";
 
 class GoogleBook extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { titleQuery: '', isSearching: false };
+        this.state = { isSearching: false, searchText: '' };
     }
 
-    handleSearchChange(title) {
-        if (title === '') {
-            return;
-        }
-        this.props.onSearchBookChange(title);
+    handleSearchChange() {
+        this.props.onSearchBookChange(this.getInputValue());
         this.setState({ isSearching: true });
     }
 
-    componentWillMount() {
-        console.log(this.props);
+    getInputValue = () => {
+        return this.state.searchText;
     }
 
     render() {
-        console.log(this.props);
         return (
-            <div>
-                <input type="text" placeholder="ENTER TITLE" value={this.state.titleQuery} onChange={e => this.setState({ titleQuery: e.target.value })} />
-                <button disabled={this.props.book.isFetching} onClick={e => { this.handleSearchChange(this.state.titleQuery) }}>Search</button>
+            <form>
                 <div>
-                    {this.state.isSearching && <EnhancedBookListWithLoadIndicator books={this.props.book.data} isFetching={this.props.book.isFetching} /> }
+                    <H3>Looking for books:</H3>
+                    <Input type="text" value={this.state.searchText} onChange={e => this.setState({ searchText: e.target.value })} placeholder="ENTER BOOK TITLE" />
+                    <ButtonDefault type="submit" disabled={this.props.book.isFetching} onClick={e => { this.handleSearchChange() }}> Search</ButtonDefault>
+                    <div>
+                        {this.state.isSearching && <EnhancedBookListWithLoadIndicator books={this.props.book.data} isFetching={this.props.book.isFetching} />}
+                    </div>
                 </div>
-            </div>
+            </form >
         )
     }
 }
